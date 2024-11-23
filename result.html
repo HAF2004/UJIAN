@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Ujian</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .result-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .user-info {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .score-info {
+            background: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 2px solid #28a745;
+        }
+        .score-value {
+            font-size: 48px;
+            color: #28a745;
+            font-weight: bold;
+        }
+        .essay-answers {
+            background: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            border: 1px solid #dee2e6;
+        }
+        .essay-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .essay-item:last-child {
+            border-bottom: none;
+        }
+        .essay-question {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        .essay-answer {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hasil Ujian Anda</h1>
+        <div id="resultContent">
+            <!-- Content will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const userId = localStorage.getItem('userId');
+            const userName = localStorage.getItem('userName');
+            const score = localStorage.getItem('quizScore');
+            const totalQuestions = localStorage.getItem('totalQuestions');
+
+            // Get essay answers
+            const essayAnswers = [
+                localStorage.getItem('essay1'),
+                localStorage.getItem('essay2'),
+                localStorage.getItem('essay3'),
+                localStorage.getItem('essay4'),
+                localStorage.getItem('essay5')
+            ];
+
+            // Essay questions
+            const essayQuestions = [
+                "Jelaskan fungsi jaringan komputer dalam kehidupan sehari-hari!",
+                "Sebutkan beberapa keuntungan menggunakan cloud computing!",
+                "Jelaskan perbedaan antara virus dan malware!",
+                "Bagaimana cara mengamankan data pribadi di internet?",
+                "Jelaskan konsep Internet of Things (IoT)!"
+            ];
+
+            if (!userId || !userName) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Convert score to 0-100 scale
+            const scorePercentage = (score / totalQuestions) * 100;
+
+            const resultContent = document.getElementById('resultContent');
+            resultContent.innerHTML = `
+                <div class="result-info">
+                    <div class="user-info">
+                        <h2>Data Peserta</h2>
+                        <p><strong>ID:</strong> ${userId}</p>
+                        <p><strong>Nama:</strong> ${userName}</p>
+                    </div>
+
+                    <div class="score-info">
+                        <h2>Nilai Ujian</h2>
+                        <div class="score-value">${scorePercentage.toFixed(0)}</div>
+                        <p>Jawaban benar: ${score} dari ${totalQuestions} soal</p>
+                    </div>
+
+                    <div class="essay-answers">
+                        <h2>Jawaban Essay</h2>
+                        ${essayAnswers.map((answer, index) => `
+                            <div class="essay-item">
+                                <div class="essay-question">Soal ${index + 1}:</div>
+                                <div class="essay-question">${essayQuestions[index]}</div>
+                                <div class="essay-answer">${answer || '-'}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Ujian Online</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login Ujian Online</h1>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="id">ID (Nim):</label>
+                <input type="text" id="id" name="id" required>
+                <div id="idError" class="error">ID harus diisi</div>
+            </div>
+            <div class="form-group">
+                <label for="nama">Nama:</label>
+                <input type="text" id="nama" name="nama" required>
+                <div id="namaError" class="error">Nama harus diisi</div>
+            </div>
+            <button type="button" onclick="handleLogin()">Mulai Ujian</button>
+        </form>
+    </div>
+
+    <script>
+        function handleLogin() {
+            const id = document.getElementById('id').value.trim();
+            const nama = document.getElementById('nama').value.trim();
+            
+            // Reset error messages
+            document.getElementById('idError').style.display = 'none';
+            document.getElementById('namaError').style.display = 'none';
+            
+            // Validate inputs
+            let isValid = true;
+            
+            if (!id) {
+                document.getElementById('idError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!nama) {
+                document.getElementById('namaError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Store in localStorage instead of sessionStorage for better persistence
+                localStorage.setItem('userId', id);
+                localStorage.setItem('userName', nama);
+                
+                // Redirect to exam page
+                window.location.href = 'soal.html';
+            }
+        }
+
+        // Check if back button was used and clear form
+        window.onload = function() {
+            document.getElementById('id').value = '';
+            document.getElementById('nama').value = '';
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userName');
+        }
+    </script>
+</body>
+</html>
